@@ -1,2 +1,2 @@
-require './randomizr'
-run Sinatra::Application
+require File.dirname(__FILE__) + '/randomizr'
+run Randomizr

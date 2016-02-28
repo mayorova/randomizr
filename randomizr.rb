@@ -1,18 +1,29 @@
-require 'sinatra'
+require 'sinatra/base'
+require 'sinatra/namespace'
+require 'json'
 
-namespace '/api' do
-  get '/number' do
-    # generate random number from 1 to 100
-    prng = Random.new
-    random_num = prng.rand(100) + 1
-    { number: random_num }.to_json
-  end
+class Randomizr < Sinatra::Base
+  register Sinatra::Namespace
 
-  get '/date' do
-    { date: '2016-02-27' }.to_json
-  end
+  namespace '/api' do
+    get '/number' do
+      # generate random number from 1 to 100
+      prng = Random.new
+      random_num = prng.rand(100) + 1
+      { number: random_num }.to_json
+    end
 
-  get '/uuid' do
-    { uuid: SecureRandom.uuid }.to_json
+    get '/date' do
+      { date: '2016-02-27' }.to_json
+    end
+
+    get '/uuid' do
+      { uuid: SecureRandom.uuid }.to_json
+    end
   end
+  
 end
+
+
+
+
