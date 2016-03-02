@@ -19,10 +19,13 @@ class RandomizrApi < Sinatra::Base
 
   namespace '/api' do
 
+    # -----------------------
+    # GET /number
+    # -----------------------
     get '/number' do
       param :min, Integer,  default: 1
       param :max, Integer,  default: 100
-      param :scale, Integer,  deault: 0 
+      param :scale, Integer,  deault: 0
 
       max = params[:max]
       min = params[:min]
@@ -44,12 +47,12 @@ class RandomizrApi < Sinatra::Base
       { number: random_num }.to_json
     end
 
+    # -----------------------
+    # GET /date
+    # -----------------------
     get '/date' do
       param :from,  Date
       param :to,  Date
-
-      logger.info(params[:from])
-      logger.info(params[:to])
 
       from = params[:from]
       to = params[:to]
@@ -73,12 +76,41 @@ class RandomizrApi < Sinatra::Base
       { date: random_date }.to_json
     end
 
+    # -----------------------
+    # GET /time
+    # -----------------------
+    get '/time' do
+      param :period,  String  # Accepted values: day, night, morning, afternoon, evening, midnight
+
+      period = params[:period]
+
+      # validate the period
+      if period and !Faker::Time::TIME_RANGES.keys.include?(period.to_sym)
+        error = { message: "Invalid parameters, period", errors: { "period" => "Parameter 'period' is not one of "} }.to_json
+        halt 400, error
+      end
+
+      logger.info(period)
+      # set defaults
+      period = period.nil? ? :all : period.to_sym
+      logger.info(period)
+
+      random_time = Faker::Time.between(Date.today, Date.today-1, period) # from yesterday to today
+      random_time = random_time.strftime("%H:%M:%S")
+
+      { time: random_time }.to_json
+    end
+
+    # -----------------------
+    # GET /uuid
+    # -----------------------
     get '/uuid' do
       { uuid: SecureRandom.uuid }.to_json
     end
 
   end
 
+  # A 404 error is sent when trying to access any endpoint that is not implemented yet
   not_found do
     error 404, { message: "endpoint not found" }.to_json
   end
