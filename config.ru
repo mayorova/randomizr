@@ -1,2 +1,3 @@
-require File.dirname(__FILE__) + '/randomizr'
-run Randomizr
+require_relative 'environment'
+
+run RandomizrApi
