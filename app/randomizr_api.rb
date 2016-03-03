@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'sinatra/namespace'
 require 'sinatra/param'
 require 'sinatra/cross_origin'
+require 'marky_markov'
 require 'json'
 
 class RandomizrApi < Sinatra::Base
@@ -15,17 +16,30 @@ class RandomizrApi < Sinatra::Base
     enable :cross_origin
   end
 
+  # configure :development do
+  #   set :raise_sinatra_param_exceptions, true
+  #   set :show_exceptions, false 
+  #   set :raise_errors, true
+  # end
+
+  set :root, File.expand_path('.')
+
+  # Dictionary for text generation
+  set :dict_name, ENV['MARKOV_DICT']
+
+  # CORS settings
   set :allow_origin, :any
   set :allow_methods, [:get, :post, :options]
   set :allow_credentials, true
   set :max_age, "1728000"
   set :expose_headers, ['Content-Type']
 
-  # configure :development do
-  #   set :raise_sinatra_param_exceptions, true
-  #   set :show_exceptions, false 
-  #   set :raise_errors, true
-  # end
+  def initialize
+    super
+
+    # Initialize the dictionary for text generation
+    @dict = MarkyMarkov::Dictionary.new("#{settings.root}/dict/#{settings.dict_name}")
+  end
 
   before do
     content_type :json
@@ -197,6 +211,57 @@ class RandomizrApi < Sinatra::Base
       end
 
       { message: "Locale '#{params[:code]}' saved successfully" }.to_json
+    end
+
+    # -----------------------
+    # POST /locale
+    # -----------------------
+    post '/locale' do
+      param :code,  String, required: true
+
+      code = params[:code].downcase
+      if I18n.available_locales.map(&:to_s).map(&:downcase).include? code
+        Faker::Config.locale = params[:code]
+      else
+        error = { message: "Invalid parameters, code", errors: { "code" => "Locale code is not one of the allowed"} }.to_json
+        halt 400, error
+      end
+
+      { message: "Locale '#{params[:code]}' saved successfully" }.to_json
+    end
+
+    # -----------------------
+    # GET /text/:source/words
+    # -----------------------
+    get '/text/:source/words' do |source|
+      param :count, Integer
+      count = params[:count] || 5
+
+      if source.downcase == "lorem"
+        random_words = Faker::Lorem.words(count)
+      else
+        halt 404
+      end
+
+      { words: random_words }.to_json
+    end
+
+    # -----------------------
+    # GET /text/:source/text
+    # -----------------------
+    get '/text/:source/text' do |source|
+      param :count, Integer
+      count = params[:count] || 5
+
+      if source.downcase == "lorem"
+        random_text = Faker::Lorem.paragraph(count)
+      elsif source.downcase == "3scale"
+        random_text = @dict.generate_n_sentences(count)
+      else
+        halt 404
+      end
+      
+      { text: random_text }.to_json
     end
 
   end

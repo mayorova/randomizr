@@ -8,6 +8,8 @@ gem 'sinatra-param', '~>1.4.0'
 gem 'sinatra-cross_origin', '~> 0.3.2'
 gem 'thin', '~>1.6.4'
 gem 'faker', '~>1.6.3'
+gem 'marky_markov', '~>0.3.5'
+gem 'dotenv', '~>2.1.0'
 
 group :test do
   gem 'rspec'
