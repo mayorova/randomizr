@@ -1,0 +1,415 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Randomizr API",
+        "description": "A simple API for generating all types of random stuff",
+        "contact": {
+            "name": "Daria Mayorova",
+            "email": "d.mayorova@gmail.com",
+            "url": "https://github.com/mayorova"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+        }
+    },
+    "host": "randomizr-api.herokuapp.com",
+    "basePath": "/api",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/number": {
+            "get": {
+                "description": "Returns a random number, by default an integer from 1 to 100\n",
+                "operationId": "number",
+                "parameters": [
+                    {
+                        "name": "min",
+                        "description": "minimum number (inclusive)",
+                        "in": "query",
+                        "required": false,
+                        "default": 1,
+                        "type": "number"
+                    },
+                    {
+                        "name": "max",
+                        "description": "maximum number (inclusive)",
+                        "in": "query",
+                        "required": false,
+                        "default": 100,
+                        "type": "number"
+                    },
+                    {
+                        "name": "scale",
+                        "description": "number of digits following the decimal point",
+                        "in": "query",
+                        "required": false,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "random number",
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
+                        }
+                    }
+                }
+            }
+        },
+        "/date": {
+            "get": {
+                "description": "Generates a random date\n",
+                "operationId": "date",
+                "parameters": [
+                    {
+                        "name": "from",
+                        "description": "start date (inclusive), format yyyy-mm-dd",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "to",
+                        "description": "end date (inclusive), format yyyy-mm-dd",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "format": "date"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "random date in ISO8601 format\n",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
+                        }
+                    }
+                }
+            }
+        },
+        "/time": {
+            "get": {
+                "description": "Generates a random time\n",
+                "operationId": "time",
+                "parameters": [
+                    {
+                        "name": "period",
+                        "description": "a specific part of the day: day, morning, night, afternoon, evening, midnight",
+                        "in": "query",
+                        "required": false,
+                        "enum": [
+                            "day",
+                            "morning",
+                            "night",
+                            "afternoon",
+                            "evening",
+                            "midnight"
+                        ],
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "random time\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "time": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
+                        }
+                    }
+                }
+            }
+        },
+        "/uuid": {
+            "get": {
+                "description": "Generates a v4 random UUID \n",
+                "operationId": "uuid",
+                "responses": {
+                    "200": {
+                        "description": "random UUID v4",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "uuid": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
+                        }
+                    }
+                }
+            }
+        },
+        "/name": {
+            "get": {
+                "description": "Generates a random name",
+                "operationId": "name",
+                "responses": {
+                    "200": {
+                        "description": "random name\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
+                        }
+                    }
+                }
+            }
+        },
+        "/username": {
+            "get": {
+                "description": "Generates a random username",
+                "operationId": "username",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "description": "the name to be used in the username",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "random username\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "username": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
+                        }
+                    }
+                }
+            }
+        },
+        "/email": {
+            "get": {
+                "description": "Generates a random email address",
+                "operationId": "email",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "description": "the name to be used in the email address",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "safe",
+                        "description": "if true, the generated emails are guaranteed to not exist",
+                        "in": "query",
+                        "required": false,
+                        "type": "boolean"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "random email address\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
+                        }
+                    }
+                }
+            }
+        },
+        "/password": {
+            "get": {
+                "description": "Generate a random password",
+                "operationId": "password",
+                "parameters": [
+                    {
+                        "name": "min_length",
+                        "description": "minimum length",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32",
+                        "default": 8
+                    },
+                    {
+                        "name": "max_length",
+                        "description": "maximum length",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32",
+                        "default": 16
+                    },
+                    {
+                        "name": "special_chars",
+                        "in": "query",
+                        "required": false,
+                        "type": "boolean",
+                        "default": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "random password\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
+                        }
+                    }
+                }
+            }
+        },
+        "/phone": {
+            "get": {
+                "description": "Generates a random phone number",
+                "operationId": "phone",
+                "parameters": [
+                    {
+                        "name": "locale",
+                        "description": "The region to be used to generate numbers ('es', 'en-US' etc.)",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "ca",
+                            "de",
+                            "en-GB",
+                            "en-US",
+                            "en",
+                            "es",
+                            "fr",
+                            "it",
+                            "ja",
+                            "ru"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "random phone number\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "phone": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
+                        }
+                    }
+                }
+            }
+        },
+        "/locale": {
+            "get": {
+                "description": "Get current locale",
+                "operationId": "getLocale",
+                "responses": {
+                    "200": {
+                        "description": "current locale\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "locale": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "BadRequstError": {
+            "required": [
+                "message",
+                "errors"
+            ],
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "object"
+                }
+            }
+        }
+    }
+}

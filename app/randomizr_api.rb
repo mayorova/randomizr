@@ -2,7 +2,6 @@ require 'sinatra/base'
 require 'sinatra/namespace'
 require 'sinatra/param'
 require 'json'
-require 'bundler'
 
 class RandomizrApi < Sinatra::Base
 
@@ -12,6 +11,12 @@ class RandomizrApi < Sinatra::Base
   configure do
     enable :logging
   end
+
+  # configure :development do
+  #   set :raise_sinatra_param_exceptions, true
+  #   set :show_exceptions, false 
+  #   set :raise_errors, true
+  # end
 
   before do
     content_type :json
@@ -33,7 +38,8 @@ class RandomizrApi < Sinatra::Base
 
       # check max and min
       if max and min and max < min
-        error = { message: "Invalid parameters, max, min", errors: { "max" => "Parameter 'min' should be less than 'max'"} }.to_json
+        error = { message: "Invalid parameters, max, min", errors: { "max" => "Parameter 'min' 
+          should be less than 'max'"} }.to_json
         halt 400, error
       end
 
@@ -68,9 +74,6 @@ class RandomizrApi < Sinatra::Base
       # fix the defaults if necessary (if only 'from' is set, and it is after 'today')
       to = from + 365 if from > to
 
-      logger.info(from)
-      logger.info(to)
-
       random_date = Faker::Date.between(from, to)
 
       { date: random_date }.to_json
@@ -86,14 +89,12 @@ class RandomizrApi < Sinatra::Base
 
       # validate the period
       if period and !Faker::Time::TIME_RANGES.keys.include?(period.to_sym)
-        error = { message: "Invalid parameters, period", errors: { "period" => "Parameter 'period' is not one of "} }.to_json
+        error = { message: "Invalid parameters, period", errors: { "period" => "Parameter 'period' is not one of the allowed"} }.to_json
         halt 400, error
       end
 
-      logger.info(period)
       # set defaults
       period = period.nil? ? :all : period.to_sym
-      logger.info(period)
 
       random_time = Faker::Time.between(Date.today, Date.today-1, period) # from yesterday to today
       random_time = random_time.strftime("%H:%M:%S")
@@ -108,11 +109,97 @@ class RandomizrApi < Sinatra::Base
       { uuid: SecureRandom.uuid }.to_json
     end
 
+    # -----------------------
+    # GET /name
+    # -----------------------
+    get '/name' do
+      random_name = Faker::Name.name
+      { name: random_name }.to_json
+    end
+
+    # -----------------------
+    # GET /username
+    # -----------------------
+    get '/username' do
+      param :name,  String
+
+      random_name = Faker::Internet.user_name(params[:name])
+
+      { username: random_name }.to_json
+    end
+
+    # -----------------------
+    # GET /email
+    # -----------------------
+    get '/email' do
+      param :name,  String
+      param :safe,  Boolean, default: false
+
+      name = params[:name]
+      random_email = params[:safe] ? Faker::Internet.safe_email(name) : Faker::Internet.email(name)
+
+      { email: random_email }.to_json
+    end
+
+    # -----------------------
+    # GET /password
+    # -----------------------
+    get '/password' do
+      param :min_length,  Integer,  default: 8
+      param :max_length,  Integer,  default: 16
+      param :special_chars,  Boolean, default: false
+
+      random_password = Faker::Internet.password(params[:min_length], params[:max_length], true, params[:special_chars])
+
+      { password: random_password }.to_json
+    end
+
+    # -----------------------
+    # GET /phone
+    # -----------------------
+    get '/phone' do
+      param :mobile,  Boolean, default: false
+
+      random_phone = params[:mobile] ? Faker::PhoneNumber.cell_phone : Faker::PhoneNumber.phone_number
+
+      { phone: random_phone }.to_json
+    end
+
+    # -----------------------
+    # GET /locale
+    # -----------------------
+    get '/locale' do
+      { locale: Faker::Config.locale }.to_json
+    end
+
+
+    # -----------------------
+    # POST /locale
+    # -----------------------
+    post '/locale' do
+      param :code,  String, required: true
+
+      code = params[:code].downcase
+      if I18n.available_locales.map(&:to_s).map(&:downcase).include? code
+        Faker::Config.locale = params[:code]
+      else
+        error = { message: "Invalid parameters, code", errors: { "code" => "Locale code is not one of the allowed"} }.to_json
+        halt 400, error
+      end
+
+      { message: "Locale '#{params[:code]}' saved successfully" }.to_json
+    end
+
   end
 
   # A 404 error is sent when trying to access any endpoint that is not implemented yet
   not_found do
-    error 404, { message: "endpoint not found" }.to_json
+    error 404, { message: "Endpoint not found" }.to_json
+  end
+
+  # Send a 500 error for any other error
+  error do
+    error 500, { message: "Server error" }.to_json
   end
   
 end
