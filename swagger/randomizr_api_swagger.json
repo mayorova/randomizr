@@ -467,10 +467,10 @@
                 }
             }
         },
-        "/text/{source}/sentences": {
+        "/text/{source}/text": {
             "get": {
                 "description": "Get random words",
-                "operationId": "getSentences",
+                "operationId": "getText",
                 "parameters": [
                     {
                         "name": "source",
