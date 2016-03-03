@@ -32,6 +32,20 @@
                 "operationId": "getWords",
                 "parameters": [
                     {
+                        "name": "app_id",
+                        "description": "Application ID",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "app_key",
+                        "description": "Application key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "name": "count",
                         "description": "the number of words to generate",
                         "in": "query",
@@ -54,6 +68,18 @@
                                 }
                             }
                         }
+                    },
+                    "403": {
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule matched",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -63,6 +89,20 @@
                 "description": "Get a paragraph of a random text",
                 "operationId": "getParagraph",
                 "parameters": [
+                    {
+                        "name": "app_id",
+                        "description": "Application ID",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "app_key",
+                        "description": "Application key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "name": "source",
                         "description": "a data set for random text generation",
@@ -95,41 +135,18 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "endpoint not found error",
+                    "403": {
+                        "description": "Authentication failed",
                         "schema": {
-                            "$ref": "#/definitions/NotFoundError"
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "BadRequstError": {
-            "required": [
-                "message",
-                "errors"
-            ],
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "errors": {
-                    "type": "object"
-                }
-            }
-        },
-        "NotFoundError": {
-            "required": [
-                "message"
-            ],
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "errors": {
-                    "type": "object"
                 }
             }
         }

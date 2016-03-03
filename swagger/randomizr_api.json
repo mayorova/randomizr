@@ -32,6 +32,13 @@
                 "operationId": "number",
                 "parameters": [
                     {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "name": "min",
                         "description": "minimum number (inclusive)",
                         "in": "query",
@@ -56,15 +63,27 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "random number",
+                        "description": "Random number",
                         "schema": {
                             "type": "number"
                         }
                     },
                     "400": {
-                        "description": "bad request",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/BadRequstError"
+                        }
+                    },
+                    "403": {
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -75,6 +94,13 @@
                 "description": "Generates a random date\n",
                 "operationId": "date",
                 "parameters": [
+                    {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "name": "from",
                         "description": "start date (inclusive), format yyyy-mm-dd",
@@ -101,9 +127,21 @@
                         }
                     },
                     "400": {
-                        "description": "bad request",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/BadRequstError"
+                        }
+                    },
+                    "403": {
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -114,6 +152,13 @@
                 "description": "Generates a random time\n",
                 "operationId": "time",
                 "parameters": [
+                    {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "name": "period",
                         "description": "a specific part of the day: day, morning, night, afternoon, evening, midnight",
@@ -143,9 +188,21 @@
                         }
                     },
                     "400": {
-                        "description": "bad request",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/BadRequstError"
+                        }
+                    },
+                    "403": {
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -155,6 +212,15 @@
             "get": {
                 "description": "Generates a v4 random UUID \n",
                 "operationId": "uuid",
+                "parameters": [
+                    {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "random UUID v4",
@@ -168,9 +234,21 @@
                         }
                     },
                     "400": {
-                        "description": "bad request",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/BadRequstError"
+                        }
+                    },
+                    "403": {
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -180,6 +258,15 @@
             "get": {
                 "description": "Generates a random name",
                 "operationId": "name",
+                "parameters": [
+                    {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "random name\n",
@@ -192,10 +279,16 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "bad request",
+                    "403": {
+                        "description": "Authentication failed",
                         "schema": {
-                            "$ref": "#/definitions/BadRequstError"
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -226,10 +319,16 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "bad request",
+                    "403": {
+                        "description": "Authentication failed",
                         "schema": {
-                            "$ref": "#/definitions/BadRequstError"
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -240,6 +339,13 @@
                 "description": "Generates a random email address",
                 "operationId": "email",
                 "parameters": [
+                    {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "name": "name",
                         "description": "the name to be used in the email address",
@@ -267,10 +373,16 @@
                             }
                         }
                     },
-                    "404": {
-                        "description": "bad request",
+                    "403": {
+                        "description": "Authentication failed",
                         "schema": {
-                            "$ref": "#/definitions/BadRequstError"
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -281,6 +393,13 @@
                 "description": "Generate a random password",
                 "operationId": "password",
                 "parameters": [
+                    {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "name": "min_length",
                         "description": "minimum length",
@@ -318,9 +437,21 @@
                         }
                     },
                     "400": {
-                        "description": "bad request",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/BadRequstError"
+                        }
+                    },
+                    "403": {
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -331,6 +462,13 @@
                 "description": "Generates a random phone number",
                 "operationId": "phone",
                 "parameters": [
+                    {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "name": "locale",
                         "description": "The region to be used to generate numbers ('es', 'en-US' etc.)",
@@ -364,9 +502,21 @@
                         }
                     },
                     "400": {
-                        "description": "bad request",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/BadRequstError"
+                        }
+                    },
+                    "403": {
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -376,6 +526,15 @@
             "get": {
                 "description": "Get current locale",
                 "operationId": "getLocale",
+                "parameters": [
+                    {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "current locale\n",
@@ -387,6 +546,18 @@
                                 }
                             }
                         }
+                    },
+                    "403": {
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             },
@@ -394,6 +565,13 @@
                 "description": "Update the locale",
                 "operationId": "postLocale",
                 "parameters": [
+                    {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
                     {
                         "name": "code",
                         "description": "Locale code",
@@ -427,9 +605,21 @@
                         }
                     },
                     "400": {
-                        "description": "bad request",
+                        "description": "Bad request",
                         "schema": {
                             "$ref": "#/definitions/BadRequstError"
+                        }
+                    },
+                    "403": {
+                        "description": "Authentication failed",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "No Mapping Rule Matched",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -441,19 +631,6 @@
             "required": [
                 "message",
                 "errors"
-            ],
-            "properties": {
-                "message": {
-                    "type": "string"
-                },
-                "errors": {
-                    "type": "object"
-                }
-            }
-        },
-        "NotFoundError": {
-            "required": [
-                "message"
             ],
             "properties": {
                 "message": {
