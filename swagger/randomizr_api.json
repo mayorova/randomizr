@@ -14,7 +14,7 @@
             "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
         }
     },
-    "host": "randomizr-api.herokuapp.com",
+    "host": "api.mayorova.me",
     "basePath": "/api",
     "schemes": [
         "http"
