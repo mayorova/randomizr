@@ -247,9 +247,9 @@ class RandomizrApi < Sinatra::Base
     end
 
     # -----------------------
-    # GET /text/:source/text
+    # GET /text/:source/paragraph
     # -----------------------
-    get '/text/:source/text' do |source|
+    get '/text/:source/paragraph' do |source|
       param :count, Integer
       count = params[:count] || 5
 

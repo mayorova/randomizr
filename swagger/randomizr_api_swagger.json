@@ -467,10 +467,10 @@
                 }
             }
         },
-        "/text/{source}/text": {
+        "/text/{source}/paragraph": {
             "get": {
-                "description": "Get random words",
-                "operationId": "getText",
+                "description": "Get a paragraph of a random text",
+                "operationId": "getParagraph",
                 "parameters": [
                     {
                         "name": "source",
