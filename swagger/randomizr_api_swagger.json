@@ -434,6 +434,84 @@
                     }
                 }
             }
+        },
+        "/text/lorem/words": {
+            "get": {
+                "description": "Get random words",
+                "operationId": "getWords",
+                "parameters": [
+                    {
+                        "name": "count",
+                        "description": "the number of words to generate",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "a list of random words\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "words": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/text/{source}/sentences": {
+            "get": {
+                "description": "Get random words",
+                "operationId": "getSentences",
+                "parameters": [
+                    {
+                        "name": "source",
+                        "description": "a data set for random text generation",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "lorem",
+                            "3scale"
+                        ]
+                    },
+                    {
+                        "name": "count",
+                        "description": "the number of sentences to generate",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "a list of random words\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "endpoint not found error",
+                        "schema": {
+                            "$ref": "#/definitions/NotFoundError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -441,6 +519,19 @@
             "required": [
                 "message",
                 "errors"
+            ],
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "object"
+                }
+            }
+        },
+        "NotFoundError": {
+            "required": [
+                "message"
             ],
             "properties": {
                 "message": {
