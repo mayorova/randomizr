@@ -230,40 +230,40 @@ class RandomizrApi < Sinatra::Base
       { message: "Locale '#{params[:code]}' saved successfully" }.to_json
     end
 
-    # -----------------------
-    # GET /text/:source/words
-    # -----------------------
-    get '/text/:source/words' do |source|
-      param :count, Integer
-      count = params[:count] || 5
+  end
 
-      if source.downcase == "lorem"
-        random_words = Faker::Lorem.words(count)
-      else
-        halt 404
-      end
+  # -----------------------
+  # GET /text/:source/words
+  # -----------------------
+  get '/textgen/:source/words' do |source|
+    param :count, Integer
+    count = params[:count] || 5
 
-      { words: random_words }.to_json
+    if source.downcase == "lorem"
+      random_words = Faker::Lorem.words(count)
+    else
+      halt 404
     end
 
-    # -----------------------
-    # GET /text/:source/paragraph
-    # -----------------------
-    get '/text/:source/paragraph' do |source|
-      param :count, Integer
-      count = params[:count] || 5
+    { words: random_words }.to_json
+  end
 
-      if source.downcase == "lorem"
-        random_text = Faker::Lorem.paragraph(count)
-      elsif source.downcase == "3scale"
-        random_text = @dict.generate_n_sentences(count)
-      else
-        halt 404
-      end
-      
-      { text: random_text }.to_json
+  # -----------------------
+  # GET /text/:source/paragraph
+  # -----------------------
+  get '/textgen/:source/paragraph' do |source|
+    param :count, Integer
+    count = params[:count] || 5
+
+    if source.downcase == "lorem"
+      random_text = Faker::Lorem.paragraph(count)
+    elsif source.downcase == "3scale"
+      random_text = @dict.generate_n_sentences(count)
+    else
+      halt 404
     end
-
+    
+    { text: random_text }.to_json
   end
 
   options "*" do

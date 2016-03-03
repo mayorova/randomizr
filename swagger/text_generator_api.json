@@ -1,0 +1,137 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Text Generator API",
+        "description": "A simple API for generating random text",
+        "contact": {
+            "name": "Daria Mayorova",
+            "email": "daria@3scale.net",
+            "url": "https://github.com/mayorova"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+        }
+    },
+    "host": "randomizr-api.herokuapp.com",
+    "basePath": "/textgen",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/lorem/words": {
+            "get": {
+                "description": "Get random words",
+                "operationId": "getWords",
+                "parameters": [
+                    {
+                        "name": "count",
+                        "description": "the number of words to generate",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "a list of random words\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "words": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{source}/paragraph": {
+            "get": {
+                "description": "Get a paragraph of a random text",
+                "operationId": "getParagraph",
+                "parameters": [
+                    {
+                        "name": "source",
+                        "description": "a data set for random text generation",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "lorem",
+                            "3scale"
+                        ]
+                    },
+                    {
+                        "name": "count",
+                        "description": "the number of sentences to generate",
+                        "in": "query",
+                        "required": false,
+                        "type": "number",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "a list of random words\n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "text": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "endpoint not found error",
+                        "schema": {
+                            "$ref": "#/definitions/NotFoundError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "BadRequstError": {
+            "required": [
+                "message",
+                "errors"
+            ],
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "object"
+                }
+            }
+        },
+        "NotFoundError": {
+            "required": [
+                "message"
+            ],
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "errors": {
+                    "type": "object"
+                }
+            }
+        }
+    }
+}
