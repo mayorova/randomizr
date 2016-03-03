@@ -36,7 +36,6 @@
                         "description": "minimum number (inclusive)",
                         "in": "query",
                         "required": false,
-                        "default": 1,
                         "type": "number"
                     },
                     {
@@ -44,7 +43,6 @@
                         "description": "maximum number (inclusive)",
                         "in": "query",
                         "required": false,
-                        "default": 100,
                         "type": "number"
                     },
                     {
@@ -289,8 +287,7 @@
                         "in": "query",
                         "required": false,
                         "type": "number",
-                        "format": "int32",
-                        "default": 8
+                        "format": "int32"
                     },
                     {
                         "name": "max_length",
@@ -298,8 +295,7 @@
                         "in": "query",
                         "required": false,
                         "type": "number",
-                        "format": "int32",
-                        "default": 16
+                        "format": "int32"
                     },
                     {
                         "name": "special_chars",
@@ -339,7 +335,7 @@
                         "name": "locale",
                         "description": "The region to be used to generate numbers ('es', 'en-US' etc.)",
                         "in": "query",
-                        "required": true,
+                        "required": false,
                         "type": "string",
                         "enum": [
                             "ca",
@@ -390,6 +386,50 @@
                                     "type": "string"
                                 }
                             }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Update the locale",
+                "operationId": "postLocale",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "description": "Locale code",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "ca",
+                            "de",
+                            "en-GB",
+                            "en-US",
+                            "en",
+                            "es",
+                            "fr",
+                            "it",
+                            "ja",
+                            "ru"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success message \n",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "schema": {
+                            "$ref": "#/definitions/BadRequstError"
                         }
                     }
                 }
