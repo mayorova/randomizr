@@ -300,6 +300,13 @@
                 "operationId": "username",
                 "parameters": [
                     {
+                        "name": "user_key",
+                        "description": "API user key",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "name": "name",
                         "description": "the name to be used in the username",
                         "in": "query",

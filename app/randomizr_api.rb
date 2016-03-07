@@ -34,6 +34,9 @@ class RandomizrApi < Sinatra::Base
   set :max_age, "1728000"
   set :expose_headers, ['Content-Type']
 
+  # Fix 403 Forbidden error for Content-Type: application/json 
+  set :protection, :except => :json_csrf
+
   def initialize
     super
 
